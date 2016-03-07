@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "utf-8"/>
+        <meta name = "description" content = "CS 361 Assignment 4 Blackjack"/>
+        <title>Blackjack</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.css">
+        <link rel = "stylesheet" href = "/assets/css/blackjack.css"/>
+        <script type = "text/javascript" src = "/assets/javascript/blackjack.js"></script>
+        <script src="assets/javascript/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 playerBettingStatus" id="PlayerBettingStatus"></div>
+                <div class="col-sm-2 gameOptions" id="GameOptions"></div>
+                <div class="col-sm-10">
+                    <div class="row row-centered" id="Dealer"></div>
+                    <div class="row row-centered" id="Player"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="errorStateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        Your balance is too low to be dealt a new hand.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

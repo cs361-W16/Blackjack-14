@@ -17,6 +17,9 @@
 package controllers;
 
 
+import Models.Blackjack;
+import Models.Hand;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import ninja.NinjaDocTester;
@@ -24,39 +27,131 @@ import org.doctester.testbrowser.Request;
 import org.doctester.testbrowser.Response;
 import org.hamcrest.CoreMatchers;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class ApiControllerDocTesterTest extends NinjaDocTester {
     
     String URL_INDEX = "/";
-    String URL_HELLO_WORLD_JSON = "/hello_world.json";
-    
+    String URL_BLACKJACK_INITIALIZATION = "/blackjackInitialization";
+    String URL_NEW_ROUND = "/newRound";
+    String URL_CONCLUDE_ROUND = "/concludeRound";
+    String URL_DEALER_ACTION = "/dealerAction";
+    String URL_HIT = "/hit";
+    String URL_DOUBLE_DOWN = "/doubleDown";
+    String URL_SPLIT = "/split";
+    String URL_STAY = "/stay";
+
     @Test
-    public void testGetIndex() {
-    
+    public void testIndex(){
         Response response = makeRequest(
                 Request.GET().url(
                         testServerUrl().path(URL_INDEX)));
 
-        assertThat(response.payload, containsString("Hello World!"));
-        assertThat(response.payload, containsString("BAM!"));
-
-
+       assertEquals(response.httpStatus, 200);
     }
-    
+
     @Test
-    public void testGetHelloWorldJson() {
-    
+    public void testBlackjackInitialization(){
         Response response = makeRequest(
                 Request.GET().url(
-                        testServerUrl().path(URL_HELLO_WORLD_JSON)));
+                        testServerUrl().path(URL_BLACKJACK_INITIALIZATION)));
 
-        ApplicationController.SimplePojo simplePojo 
-                = response.payloadJsonAs(ApplicationController.SimplePojo.class);
-        
-        assertThat(simplePojo.content, CoreMatchers.equalTo("Hello World! Hello Json!"));
-
-    
+        assertEquals(response.httpStatus, 200);
+        //We might want to test that blackjack was updated correctly
     }
 
+    @Test
+    public void testNewRoundThrowsSetsErrorState(){
+        Blackjack blackjack = new Blackjack();
+        blackjack.errorState = false;
+        blackjack.playerBalance = 1;
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_NEW_ROUND)).payload(blackjack).contentTypeApplicationJson());
+
+        //Test that the POST  was successful
+        assertEquals(response.httpStatus, 200);
+
+        //Test that the error state was set to true
+        assertEquals(response.payloadAs(Blackjack.class).errorState, true);
+    }
+
+    @Test
+    public void testConcludeRound(){
+        Blackjack blackjack = new Blackjack();
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_CONCLUDE_ROUND)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+    }
+
+    @Test
+    public void testDealerAction(){
+        Blackjack blackjack = new Blackjack();
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_DEALER_ACTION)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+    }
+
+    @Test
+    public void testHit(){
+        Blackjack blackjack = new Blackjack();
+        Hand hand = new Hand();
+        blackjack.playerHands.add(hand);
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_HIT + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+        //Hand has one more card and status might have changed
+    }
+
+    @Test
+    public void testDoubleDown(){
+        Blackjack blackjack = new Blackjack();
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_DOUBLE_DOWN + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+        //Hand has one more card, bet was doubled and status might have changed
+    }
+
+    @Test
+    public void testSplit(){
+        Blackjack blackjack = new Blackjack();
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_SPLIT + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+        //New hand was created from the second card of the initial hand. Both hands now have a new card. ect..
+    }
+
+    @Test
+    public void testStay(){
+        Blackjack blackjack = new Blackjack();
+        Response response = makeRequest(
+                Request.POST().url(
+                        testServerUrl().path(URL_STAY + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
+
+        assertEquals(response.httpStatus, 200);
+
+        //We might want to test that blackjack was updated correctly
+        //Hand has no more options. Dealers turn may have begun
+    }
 }

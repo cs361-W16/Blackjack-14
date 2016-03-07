@@ -23,24 +23,27 @@ import ninja.application.ApplicationRoutes;
 import controllers.ApplicationController;
 
 public class Routes implements ApplicationRoutes {
-
     @Override
-    public void init(Router router) {  
-        
+    public void init(Router router) {
         router.GET().route("/").with(ApplicationController.class, "index");
-        router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
-        
- 
+        router.GET().route("/blackjack").with(ApplicationController.class, "index");
+
+        //JSON route
+        router.GET().route("/blackjackInitialization").with(ApplicationController.class, "blackjackInitialization");
+
+        //AJAX routes
+        router.POST().route("/newRound").with(ApplicationController.class, "newRound");
+        router.POST().route("/concludeRound").with(ApplicationController.class, "concludeRound");
+        router.POST().route("/dealerAction").with(ApplicationController.class, "dealerAction");
+        router.POST().route("/hit/{hand}").with(ApplicationController.class, "hit");
+        router.POST().route("/doubleDown/{hand}").with(ApplicationController.class, "doubleDown");
+        router.POST().route("/split/{hand}").with(ApplicationController.class, "split");
+        router.POST().route("/stay/{hand}").with(ApplicationController.class, "stay");
+
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
         ///////////////////////////////////////////////////////////////////////    
         router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
-        
-        ///////////////////////////////////////////////////////////////////////
-        // Index / Catchall shows index page
-        ///////////////////////////////////////////////////////////////////////
-        router.GET().route("/.*").with(ApplicationController.class, "index");
     }
-
 }
