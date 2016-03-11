@@ -42,43 +42,30 @@ public class ApplicationController {
         //=================================================================================
         String backURL = "assets/cards/cardback.jpg";
 
+        Blackjack bj = new Blackjack();
+        bj.buildDeck();
+        bj.shuffle();
+
+
         Hand dealerHand = new Hand();
-        dealerHand.cards.add(new Card(backURL, "assets/cards/2Clubs.png", false));
-        dealerHand.cards.add(new Card("assets/cards/7Clubs.png", backURL, true));
+        dealerHand.cards.add(deck.get(deck.size()-1).setFaceVisibility(false));//add card
+        deck.remove(deck.size()-1);//remove added card from deck
+
+        dealerHand.cards.add(deck.get(deck.size()-1).setFaceVisibility(true));//add card
+        deck.remove(deck.size()-1);//remove added card from deck
+
         dealerHand.status = "";
 
         Hand playerHand = new Hand();
-        playerHand.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand.cards.add(new Card("assets/cards/6Clubs.png", backURL, true));
+        playerHand.cards.add(deck.get(deck.size()-1).setFaceVisibility(true));
+        playerHand.cards.add(deck.get(deck.size()-1).setFaceVisibility(true));
+
         playerHand.bet = 2;
         playerHand.status = "";
         playerHand.handOptions.add(new Option("hit", "Hit"));
         playerHand.handOptions.add(new Option("stay", "Stay"));
         playerHand.handOptions.add(new Option("doubleDown", "Double Down"));
         playerHand.handOptions.add(new Option("split", "Split"));
-
-        Hand playerHand2 = new Hand();
-        playerHand2.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/7Hearts.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/12Hearts.png", backURL, true));
-        playerHand2.bet = 4;
-        playerHand2.status = "";
-        playerHand2.handOptions.add(new Option("hit", "Hit"));
-        playerHand2.handOptions.add(new Option("stay", "Stay"));
-        playerHand2.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand2.handOptions.add(new Option("split", "Split"));
-
-        Hand playerHand3 = new Hand();
-        playerHand3.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand3.cards.add(new Card("assets/cards/12Diamonds.png", backURL, true));
-        playerHand3.bet = 2;
-        playerHand3.status = "";
-        playerHand3.handOptions.add(new Option("hit", "Hit"));
-        playerHand3.handOptions.add(new Option("stay", "Stay"));
-        playerHand3.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand3.handOptions.add(new Option("split", "Split"));
-
-        Blackjack blackjack = new Blackjack();
 
         blackjack.errorState = false;
         blackjack.gameOptions.add(new Option("newRound", "Deal"));
