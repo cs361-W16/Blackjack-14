@@ -117,7 +117,7 @@ function generateHandHTML(cards){
     var html = "<div class='row' style='height:"+totalHeight+"px'>";
     html += "<div class='col-lg-12'>";
     for(var i = 0; i < cards.length; i++){
-        html += "<div class='row card_container'><img src='" + cards[i].visableImageURL + "'></img></div>";
+        html += "<div class='row card_container'><img src='" + cards[i].visibleImageURL + "'></img></div>";
     }
     html += "</div></div>";
     return html;

@@ -30,6 +30,21 @@ public class CardTest {
     @Test
     public void testGetFace() throws Exception {
         Card c = new Card(5, Suit.Hearts, "assets/cards/5Hearts.png", "assets/cards/cardback.jpg", true);
-        assertEquals(true, c.getFace());
+        assertEquals(true, c.getFaceVisible());
+    }
+
+    @Test
+    public void testFlipCard() throws Exception {
+        String sideA = "assets/cards/5Hearts.png";
+        String sideB = "assets/cards/cardback.jpg";
+        Card c = new Card(5, Suit.Hearts, sideA, sideB, true);
+
+        assertEquals(true, c.faceVisible);
+        assertEquals(sideA, c.visibleImageURL);
+        assertEquals(sideB, c.hiddenImageURL);
+        c.flipCard();
+        assertEquals(false, c.faceVisible);
+        assertEquals(sideB, c.visibleImageURL);
+        assertEquals(sideA, c.hiddenImageURL);
     }
 }

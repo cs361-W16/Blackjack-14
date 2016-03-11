@@ -10,8 +10,8 @@ public class Blackjack {
     public java.util.List<Option> gameOptions = new ArrayList<>();
     public Boolean dealerTurnInProgress;
     public int playerBalance;
-    public Hand dealerHand;
-    public java.util.List<Hand> playerHands = new ArrayList<>();
+    public DealerHand dealerHand;
+    public java.util.List<PlayerHand> playerHands = new ArrayList<>();
     public boolean errorState;
 
     //AJAX POST calls were forcing the requirement of dummy a constructor when mapping from JSON

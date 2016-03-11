@@ -18,7 +18,9 @@ package controllers;
 
 
 import Models.Blackjack;
+import Models.Card;
 import Models.Hand;
+import Models.PlayerHand;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -26,6 +28,9 @@ import ninja.NinjaDocTester;
 import org.doctester.testbrowser.Request;
 import org.doctester.testbrowser.Response;
 import org.hamcrest.CoreMatchers;
+
+import java.util.ArrayList;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -104,7 +109,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
     @Test
     public void testHit(){
         Blackjack blackjack = new Blackjack();
-        Hand hand = new Hand();
+        PlayerHand hand = new PlayerHand(new ArrayList<Card>(), "");
         blackjack.playerHands.add(hand);
         Response response = makeRequest(
                 Request.POST().url(

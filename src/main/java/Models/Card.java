@@ -9,31 +9,31 @@ import java.io.Serializable;
  * Created by Drew Hamm on 3/6/2016.
  */
 public class Card {
-    public String visableImageURL;
+    public String visibleImageURL;
     public String hiddenImageURL;
-    public boolean faceVisable;
+    public boolean faceVisible;
     public final int value;
     public final Suit suit;
 
     @JsonCreator
-    public Card(@JsonProperty("visableImageURL") String visableImageURL,
+    public Card(@JsonProperty("visibleImageURL") String visibleImageURL,
                 @JsonProperty("hiddenImageURL") String hiddenImageURL,
-                @JsonProperty("faceVisable") boolean faceVisable) {
+                @JsonProperty("faceVisible") boolean faceVisible) {
         this.value = 0;
         this.suit = null;
-        this.visableImageURL = visableImageURL;
+        this.visibleImageURL = visibleImageURL;
         this.hiddenImageURL = hiddenImageURL;
-        this.faceVisable = faceVisable;
+        this.faceVisible = faceVisible;
     }
 
     @JsonCreator
-    public Card(@JsonProperty("value") int value, @JsonProperty("suit") Suit suit, @JsonProperty("visableImageURL") String visableImageURL,
-                @JsonProperty("hiddenImageURL") String hiddenImageURL, @JsonProperty("faceVisable") boolean faceVisable) {
+    public Card(@JsonProperty("value") int value, @JsonProperty("suit") Suit suit, @JsonProperty("visibleImageURL") String visibleImageURL,
+                @JsonProperty("hiddenImageURL") String hiddenImageURL, @JsonProperty("faceVisible") boolean faceVisible) {
         this.value = value;
         this.suit = suit;
-        this.visableImageURL = visableImageURL;
+        this.visibleImageURL = visibleImageURL;
         this.hiddenImageURL = hiddenImageURL;
-        this.faceVisable = faceVisable;
+        this.faceVisible = faceVisible;
     }
 
 
@@ -49,11 +49,18 @@ public class Card {
         return this.value + this.suit.toString();
     }
 
-    public boolean getFace(){
-        return this.faceVisable;
+    public boolean getFaceVisible(){
+        return this.faceVisible;
     }
 
-    //AJAX POST calls were forcing the requirement of dummy a constructor when mapping from JSON
-    //public Card(){}
-
+    public void flipCard(){
+        String tempURL = visibleImageURL;
+        visibleImageURL = hiddenImageURL;
+        hiddenImageURL = tempURL;
+        if(faceVisible){
+            faceVisible = false;
+        }else{
+            faceVisible = true;
+        }
+    }
 }
