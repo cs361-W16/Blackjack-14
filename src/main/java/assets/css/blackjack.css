@@ -1,0 +1,42 @@
+.playerBettingStatus {
+    height: 40px;
+}
+
+.playerBettingStatus span{
+    padding-right: 15px;
+    margin-top: 20px;
+}
+
+.hand {
+    vertical-align: text-top;
+}
+
+.playerOptions {
+    min-height: 50px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.card_container {
+    height: 40px;
+    width: 138px;
+    z-index: 0;
+    position: relative;
+    margin: 0 auto;
+}
+
+.card_container img {
+    height:200px;
+}
+
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:top;
+    margin-right:-4px;
+    margin-top: 0px;
+}
