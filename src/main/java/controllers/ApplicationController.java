@@ -16,10 +16,7 @@
 
 package controllers;
 
-import Models.Blackjack;
-import Models.Card;
-import Models.Hand;
-import Models.Option;
+import Models.*;
 import ninja.Context;
 import ninja.Result;
 import ninja.Results;
@@ -42,12 +39,12 @@ public class ApplicationController {
         //=================================================================================
         String backURL = "assets/cards/cardback.jpg";
 
-        Hand dealerHand = new Hand();
+        DealerHand dealerHand = new DealerHand(new ArrayList<Card>(), "");
         dealerHand.cards.add(new Card(backURL, "assets/cards/2Clubs.png", false));
         dealerHand.cards.add(new Card("assets/cards/7Clubs.png", backURL, true));
         dealerHand.status = "";
 
-        Hand playerHand = new Hand();
+        PlayerHand playerHand = new PlayerHand(new ArrayList<Card>(), "");
         playerHand.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
         playerHand.cards.add(new Card("assets/cards/6Clubs.png", backURL, true));
         playerHand.bet = 2;
@@ -57,7 +54,7 @@ public class ApplicationController {
         playerHand.handOptions.add(new Option("doubleDown", "Double Down"));
         playerHand.handOptions.add(new Option("split", "Split"));
 
-        Hand playerHand2 = new Hand();
+        PlayerHand playerHand2 = new PlayerHand(new ArrayList<Card>(), "");
         playerHand2.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
         playerHand2.cards.add(new Card("assets/cards/7Hearts.png", backURL, true));
         playerHand2.cards.add(new Card("assets/cards/12Hearts.png", backURL, true));
@@ -68,7 +65,7 @@ public class ApplicationController {
         playerHand2.handOptions.add(new Option("doubleDown", "Double Down"));
         playerHand2.handOptions.add(new Option("split", "Split"));
 
-        Hand playerHand3 = new Hand();
+        PlayerHand playerHand3 = new PlayerHand(new ArrayList<Card>(), "");
         playerHand3.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
         playerHand3.cards.add(new Card("assets/cards/12Diamonds.png", backURL, true));
         playerHand3.bet = 2;
@@ -80,6 +77,7 @@ public class ApplicationController {
 
         Blackjack blackjack = new Blackjack();
 
+        blackjack.playingCards = new PlayingCardsContainer();
         blackjack.errorState = false;
         blackjack.gameOptions.add(new Option("newRound", "Deal"));
         blackjack.dealerTurnInProgress = false;
@@ -134,7 +132,7 @@ public class ApplicationController {
     public Result doubleDown(@PathParam("hand") String handIndex, Blackjack blackjack){
         //If given an invalid index we should probably put up an error state
 
-        //
+        //We need to check that the player has enough or throw error state
 
         return Results.json().render(blackjack);
     }
