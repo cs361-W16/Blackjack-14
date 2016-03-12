@@ -49,9 +49,8 @@ public class BlackjackTest {
         blackjack = new Blackjack(initialBalance, initialAnte);
         blackjack.dealerHand.cards.add(new Card(10, Suit.Clubs, "", "", true));
         blackjack.dealerHand.cards.add(new Card(10, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).cards.add(new Card(10, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).cards.add(new Card(10, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).bet = 2;
+        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "assets/cards/13Clubs.png", "", true),
+                                             new Card(10, Suit.Clubs, "assets/cards/12Clubs.png", "", true));
         blackjack.concludeRound();
         assertEquals(102, blackjack.playerBalance);
         assertEquals(0, blackjack.playerHands.get(0).bet);
@@ -60,7 +59,8 @@ public class BlackjackTest {
         //Test lose
         blackjack = new Blackjack(initialBalance, initialAnte);
         blackjack.dealerHand.newHand(new Card(10, Suit.Clubs, "", "", true), new Card(10, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "", "", true), new Card(9, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "assets/cards/13Clubs.png", "", true),
+                                             new Card(9, Suit.Clubs, "assets/cards/9Clubs.png", "", true));
         blackjack.concludeRound();
         assertEquals(100, blackjack.playerBalance);
         assertEquals(0, blackjack.playerHands.get(0).bet);
@@ -69,7 +69,8 @@ public class BlackjackTest {
         //Test win
         blackjack = new Blackjack(initialBalance, initialAnte);
         blackjack.dealerHand.newHand(new Card(10, Suit.Clubs, "", "", true), new Card(9, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "", "", true), new Card(10, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "assets/cards/13Clubs.png", "", true),
+                                             new Card(10, Suit.Clubs, "assets/cards/10Clubs.png", "", true));
         blackjack.concludeRound();
         assertEquals(104, blackjack.playerBalance);
         assertEquals(0, blackjack.playerHands.get(0).bet);
@@ -83,7 +84,7 @@ public class BlackjackTest {
         Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
 
         //Test double down that results in hand under 21
-        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
         blackjack.doubleDownPlayerHand(0);
         assertEquals(98, blackjack.playerBalance);
         assertEquals(4, blackjack.playerHands.get(0).bet);
@@ -93,8 +94,8 @@ public class BlackjackTest {
 
         //Test double down that results in hand over 21
         blackjack = new Blackjack(initialBalance, initialAnte);
-        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "", "", true), new Card(9, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).cards.add(new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(9, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).cards.add(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true));
         blackjack.doubleDownPlayerHand(0);
         assertEquals(98, blackjack.playerBalance);
         assertEquals(4, blackjack.playerHands.get(0).bet);
@@ -110,7 +111,7 @@ public class BlackjackTest {
         Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
 
         //Test split player hand
-        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
         blackjack.splitPlayerHand(0);
         assertEquals(98, blackjack.playerBalance);
         assertEquals(2, blackjack.playerHands.get(0).bet);
@@ -129,7 +130,7 @@ public class BlackjackTest {
         Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
 
         //Test stay player hand when player only has one hand
-        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
         blackjack.stayPlayerHand(0);
         assertEquals(100, blackjack.playerBalance);
         assertEquals(2, blackjack.playerHands.get(0).bet);
@@ -139,9 +140,9 @@ public class BlackjackTest {
 
         //Test stay player hand when player has two hands with one ongoing
         blackjack = new Blackjack(initialBalance, initialAnte);
-        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
         blackjack.playerHands.add(new PlayerHand(new ArrayList<Card>(), ""));
-        blackjack.playerHands.get(1).newHand(new Card(3, Suit.Clubs, "", "", true), new Card(3, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(1).newHand(new Card(3, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(3, Suit.Clubs, "", "", true));
         blackjack.stayPlayerHand(0);
         assertEquals(100, blackjack.playerBalance);
         assertEquals(2, blackjack.playerHands.get(0).bet);

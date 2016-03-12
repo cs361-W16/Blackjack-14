@@ -30,7 +30,6 @@ public class Blackjack {
         this.ante = ante;
         this.playingCards = playingCards;
         this.gameOptions = gameOptions;
-        gameOptions.add(new Option("newRound", "Deal"));
         this.dealerTurnInProgress = dealerTurnInProgress;
         this.playerBalance = playerBalance;
         this.dealerHand = dealerHand;
@@ -38,11 +37,11 @@ public class Blackjack {
         this.errorState = errorState;
     }
 
-    //AJAX POST calls were forcing the requirement of dummy a constructor when mapping from JSON
     public Blackjack(int playerBalance, int ante){
         this.ante = ante;
         playingCards = new PlayingCardsContainer();
         gameOptions = new ArrayList<>();
+        gameOptions.add(new Option("newRound", "Deal"));
         dealerTurnInProgress = false;
         this.playerBalance = playerBalance;
         dealerHand = new DealerHand(new ArrayList<Card>(), "");

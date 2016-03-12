@@ -13,11 +13,10 @@ public class HandTest {
 
     @Test
     public void testNewHand() throws Exception {
-        Card ace1 = new Card(11, Suit.Diamonds, "front", "back", true);
-        Card ace2 = new Card(11, Suit.Clubs, "front", "back", true);
-        Card king1 = new Card(10, Suit.Spades, "front", "back", true);
-        Card king2 = new Card(10, Suit.Hearts, "front", "back", true);
-        Card seven = new Card(7, Suit.Hearts, "front", "back", true);
+        Card ace1 = new Card(11, Suit.Diamonds, "assets/cards/14Diamonds.png", "back", true);
+        Card king1 = new Card(10, Suit.Spades, "assets/cards/13Spades.png", "back", true);
+        Card king2 = new Card(10, Suit.Hearts, "assets/cards/13Hearts.png", "back", true);
+        Card seven = new Card(7, Suit.Hearts, "assets/cards/7Hearts.png", "back", true);
 
         //test dealer hand
         DealerHand dHand = new DealerHand(new ArrayList<Card>(), "");
@@ -59,10 +58,10 @@ public class HandTest {
 
     @Test
     public void testGetHandValue() throws Exception {
-        Card ace1 = new Card(11, Suit.Diamonds, "front", "back", true);
-        Card king1 = new Card(10, Suit.Spades, "front", "back", true);
-        Card king2 = new Card(10, Suit.Hearts, "front", "back", true);
-        Card seven = new Card(7, Suit.Hearts, "front", "back", true);
+        Card ace1 = new Card(11, Suit.Diamonds, "assets/cards/14Diamonds.png", "back", true);
+        Card king1 = new Card(10, Suit.Spades, "assets/cards/13Spades.png", "back", true);
+        Card king2 = new Card(10, Suit.Hearts, "assets/cards/13Hearts.png", "back", true);
+        Card seven = new Card(7, Suit.Hearts, "assets/cards/7Hearts.png", "back", true);
 
         //test player hand with 21
         PlayerHand pHand = new PlayerHand(new ArrayList<Card>(), "");
@@ -148,9 +147,9 @@ public class HandTest {
 
     @Test
     public void testDiscardHand() throws Exception {
-        Card ace1 = new Card(11, Suit.Diamonds, "front", "back", true);
-        Card ace2 = new Card(11, Suit.Clubs, "front", "back", true);
-        Card ace3 = new Card(11, Suit.Spades, "front", "back", true);
+        Card ace1 = new Card(11, Suit.Diamonds, "assets/cards/14Diamonds.png", "back", true);
+        Card ace2 = new Card(11, Suit.Clubs, "assets/cards/14Clubs.png", "back", true);
+        Card ace3 = new Card(11, Suit.Spades, "assets/cards/14Spades.png", "back", true);
         java.util.List<Card> cardsDiscarded = new ArrayList<>();
 
         //test discardHand for PlayerHand with one card

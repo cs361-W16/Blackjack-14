@@ -42,8 +42,15 @@ public class PlayerHand extends Hand{
         }
 
         //check for split
-        if(cards.size()==2 && cards.get(0).getValue()==cards.get(1).getValue()){
-            handOptions.add(new Option("split", "Split"));
+        if((cards.size()==2) && (cards.get(0).getValue()==cards.get(1).getValue())){
+            //Check that cards with value 10 are the same
+            if(cards.get(0).getValue() == 10){
+                if(cards.get(0).visibleImageURL.charAt(14) == cards.get(1).visibleImageURL.charAt(14)){
+                    handOptions.add(new Option("split", "Split"));
+                }
+            }else{
+                handOptions.add(new Option("split", "Split"));
+            }
         }
     }
 }
