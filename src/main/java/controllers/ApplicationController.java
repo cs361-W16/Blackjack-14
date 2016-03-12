@@ -28,24 +28,14 @@ import java.util.ArrayList;
 
 @Singleton
 public class ApplicationController {
-
     public Result index() {
         return Results.html().template("views/Blackjack.ftl.html");
     }
 
     public Result blackjackInitialization(){
-
-        Blackjack blackjack = new Blackjack();
-
-        blackjack.playingCards = new PlayingCardsContainer();
-        blackjack.dealerHand = new DealerHand(blackjack.playingCards.drawCards(2), "");
-        blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
-        blackjack.playerHands.get(0).resetHand();
-        blackjack.errorState = false;
-        blackjack.gameOptions.add(new Option("newRound", "Deal"));
-        blackjack.dealerTurnInProgress = false;
-        blackjack.playerBalance = 100;
-
+        Blackjack blackjack = new Blackjack(98, 2);
+        blackjack.dealerHand.newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
+        blackjack.playerHands.get(0).newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
         return Results.json().render(blackjack);
     }
 
@@ -59,9 +49,7 @@ public class ApplicationController {
     }
 
     public Result concludeRound(Blackjack blackjack){
-
-        //
-
+        blackjack.concludeRound();
         return Results.json().render(blackjack);
     }
 
@@ -85,27 +73,30 @@ public class ApplicationController {
         return Results.json().render(blackjack);
     }
 
-    public Result doubleDown(@PathParam("hand") String handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //We need to check that the player has enough or throw error state
+    public Result doubleDown(@PathParam("hand") int handIndex, Blackjack blackjack){
+        //Check that the player has enough funds or throw error state
+        PlayerHand activeHand = blackjack.playerHands.get(handIndex);
+        if(blackjack.playerBalance < activeHand.bet) {
+            blackjack.errorState = true;
+        } else {
+            blackjack.doubleDownPlayerHand(handIndex);
+        }
 
         return Results.json().render(blackjack);
     }
 
     public Result split(@PathParam("hand") int handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //
-
+        //Check that the player has enough funds or throw error state
+        if(blackjack.playerBalance < blackjack.ante) {
+            blackjack.errorState = true;
+        } else{
+            blackjack.splitPlayerHand(handIndex);
+        }
         return Results.json().render(blackjack);
     }
 
     public Result stay(@PathParam("hand") int handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //
-
+        blackjack.stayPlayerHand(handIndex);
         return Results.json().render(blackjack);
     }
 }
