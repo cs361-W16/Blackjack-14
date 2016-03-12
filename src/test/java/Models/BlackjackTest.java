@@ -15,6 +15,25 @@ import static org.junit.Assert.assertTrue;
  */
 public class BlackjackTest {
     @Test
+    public void testBlackjack() throws Exception{
+        int initialAnte = 2;
+        java.util.List<Card> drawPile = new ArrayList<>();
+        java.util.List<Card> discardPile = new ArrayList<>();
+        PlayingCardsContainer playingCards = new PlayingCardsContainer(drawPile, discardPile);
+        java.util.List<Option> gameOptions = new ArrayList<>();
+        Boolean dealerTurnInProgress = false;
+        int initialBalance = 100;
+        java.util.List<Card> cards = new ArrayList<>();
+        DealerHand dealerHand = new DealerHand(cards, "");
+        java.util.List<PlayerHand> playerHands = new ArrayList<>();
+        boolean errorState = false;
+
+        Blackjack blackjack = new Blackjack(initialAnte, playingCards, gameOptions, dealerTurnInProgress,
+                initialBalance, dealerHand, playerHands, errorState);
+        assertEquals(2, blackjack.ante);
+        assertEquals(100, blackjack.playerBalance);
+    }
+    @Test
     public void testConstructor() throws Exception{
         int initialBalance = 100;
         int initialAnte = 2;
