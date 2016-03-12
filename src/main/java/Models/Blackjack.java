@@ -18,24 +18,24 @@ public class Blackjack {
     public java.util.List<PlayerHand> playerHands;
     public boolean errorState;
 
-    @JsonCreator
-    public Blackjack(@JsonProperty("ante") int ante,
-                     @JsonProperty("playingCards") PlayingCardsContainer playingCards,
-                     @JsonProperty("gameOptions") java.util.List<Option> gameOptions,
-                     @JsonProperty("dealerTurnInProgress") Boolean dealerTurnInProgress,
-                     @JsonProperty("playerBalance") int playerBalance,
-                     @JsonProperty("dealerHand") DealerHand dealerHand,
-                     @JsonProperty("playerHands") java.util.List<PlayerHand> playerHands,
-                     @JsonProperty("errorState") boolean errorState) {
-        this.ante = ante;
-        this.playingCards = playingCards;
-        this.gameOptions = gameOptions;
-        this.dealerTurnInProgress = dealerTurnInProgress;
-        this.playerBalance = playerBalance;
-        this.dealerHand = dealerHand;
-        this.playerHands = playerHands;
-        this.errorState = errorState;
-    }
+    //@JsonCreator
+    //public Blackjack(@JsonProperty("ante") int ante,
+    //                 @JsonProperty("playingCards") PlayingCardsContainer playingCards,
+    //                 @JsonProperty("gameOptions") java.util.List<Option> gameOptions,
+    //                 @JsonProperty("dealerTurnInProgress") Boolean dealerTurnInProgress,
+    //                 @JsonProperty("playerBalance") int playerBalance,
+    //                 @JsonProperty("dealerHand") DealerHand dealerHand,
+    //                 @JsonProperty("playerHands") java.util.List<PlayerHand> playerHands,
+    //                 @JsonProperty("errorState") boolean errorState) {
+    //    this.ante = ante;
+    //    this.playingCards = playingCards;
+    //    this.gameOptions = gameOptions;
+    //    this.dealerTurnInProgress = dealerTurnInProgress;
+    //    this.playerBalance = playerBalance;
+    //    this.dealerHand = dealerHand;
+    //    this.playerHands = playerHands;
+    //    this.errorState = errorState;
+    //}
 
     public Blackjack(int playerBalance, int ante){
         this.ante = ante;
@@ -130,6 +130,27 @@ public class Blackjack {
     public void stayPlayerHand(int handIndex){
         //Remove the options for the designated hand
         playerHands.get(handIndex).handOptions.clear();
+
+        //Determine if the dealer should start their turn
+        Boolean noOptionsFound = true;
+        for(PlayerHand hand : playerHands){
+            if(hand.handOptions.size() >= 1){
+                noOptionsFound = false;
+            }
+        }
+
+        if(noOptionsFound){
+            dealerTurnInProgress = true;
+        }
+    }
+
+    //Hit for player hand
+    public void hitPlayerHand(int handIndex){
+        //Add card to hand
+        playerHands.get(handIndex).cards.add(playingCards.drawCards(1).get(0));
+
+        //Reset the options for the designated hand
+        playerHands.get(handIndex).setHandOptions();
 
         //Determine if the dealer should start their turn
         Boolean noOptionsFound = true;
