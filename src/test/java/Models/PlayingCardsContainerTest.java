@@ -15,6 +15,19 @@ import static org.junit.Assert.assertEquals;
 public class PlayingCardsContainerTest {
 
     @Test
+    public void testPlayingCards() throws Exception {
+        java.util.List<Card> drawPile = new ArrayList<>();
+        drawPile.add(new Card(5, Suit.Hearts, "assets/cards/5Hearts.png", "assets/cards/cardback.jpg", true));
+        drawPile.add(new Card(6, Suit.Hearts, "assets/cards/6Hearts.png", "assets/cards/cardback.jpg", true));
+        drawPile.add(new Card(7, Suit.Hearts, "assets/cards/7Hearts.png", "assets/cards/cardback.jpg", true));
+        java.util.List<Card> discardPile = new ArrayList<>();
+        PlayingCardsContainer cardsContainer = new PlayingCardsContainer(drawPile, discardPile);
+        assertEquals(5, cardsContainer.drawPile.get(0).value);
+        assertEquals(6, cardsContainer.drawPile.get(1).value);
+        assertEquals(7, cardsContainer.drawPile.get(2).value);
+    }
+
+    @Test
     public void testConstructor() throws Exception {
         PlayingCardsContainer cardsContainer = new PlayingCardsContainer();
         assertEquals(52, cardsContainer.drawPile.size());
@@ -69,5 +82,16 @@ public class PlayingCardsContainerTest {
         assertEquals(7, cardsContainer.drawPile.size());
         assertEquals(0, cardsContainer.discardPile.size());
         assertEquals(3, drawnCards.size());
+    }
+
+    @Test
+    public void testDiscardCards() throws Exception {
+        PlayingCardsContainer cardsContainer = new PlayingCardsContainer();
+        java.util.List<Card> Cards = new ArrayList<>();
+        Cards.add(new Card(5, Suit.Hearts, "assets/cards/5Hearts.png", "assets/cards/cardback.jpg", true));
+        Cards.add(new Card(6, Suit.Hearts, "assets/cards/6Hearts.png", "assets/cards/cardback.jpg", true));
+        Cards.add(new Card(7, Suit.Hearts, "assets/cards/7Hearts.png", "assets/cards/cardback.jpg", true));
+        cardsContainer.discardCards(Cards);
+        assertEquals(Cards, cardsContainer.discardPile);
     }
 }

@@ -15,6 +15,25 @@ import static org.junit.Assert.assertTrue;
  */
 public class BlackjackTest {
     @Test
+    public void testBlackjack() throws Exception{
+        int initialAnte = 2;
+        java.util.List<Card> drawPile = new ArrayList<>();
+        java.util.List<Card> discardPile = new ArrayList<>();
+        PlayingCardsContainer playingCards = new PlayingCardsContainer(drawPile, discardPile);
+        java.util.List<Option> gameOptions = new ArrayList<>();
+        Boolean dealerTurnInProgress = false;
+        int initialBalance = 100;
+        java.util.List<Card> cards = new ArrayList<>();
+        DealerHand dealerHand = new DealerHand(cards, "");
+        java.util.List<PlayerHand> playerHands = new ArrayList<>();
+        boolean errorState = false;
+
+        Blackjack blackjack = new Blackjack(initialAnte, playingCards, gameOptions, dealerTurnInProgress,
+                initialBalance, dealerHand, playerHands, errorState);
+        assertEquals(2, blackjack.ante);
+        assertEquals(100, blackjack.playerBalance);
+    }
+    @Test
     public void testConstructor() throws Exception{
         int initialBalance = 100;
         int initialAnte = 2;
@@ -149,5 +168,39 @@ public class BlackjackTest {
         assertEquals(2, blackjack.playerHands.get(0).cards.size());
         assertEquals(0, blackjack.playerHands.get(0).handOptions.size());
         assertEquals(false, blackjack.dealerTurnInProgress);
+    }
+
+    @Test
+    public void testHitPlayerHand() throws Exception{
+        int initialBalance = 100;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+
+        //Test hit player hand when player only has one hand
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.hitPlayerHand(0);
+        assertEquals(100, blackjack.playerBalance);
+        assertEquals(2, blackjack.playerHands.get(0).bet);
+        assertEquals(3, blackjack.playerHands.get(0).cards.size());
+
+        //Test hit player hand when player has two hands
+        blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
+        blackjack.playerHands.add(new PlayerHand(new ArrayList<Card>(), ""));
+        blackjack.playerHands.get(1).newHand(new Card(3, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(3, Suit.Clubs, "", "", true));
+        blackjack.hitPlayerHand(0);
+        assertEquals(100, blackjack.playerBalance);
+        assertEquals(2, blackjack.playerHands.get(0).bet);
+        assertEquals(3, blackjack.playerHands.get(0).cards.size());
+        assertEquals(2, blackjack.playerHands.get(1).cards.size());
+
+        //Test that dealerTurnInProgress toggles true when you hit enough times.
+        for(int handIndex = 0; handIndex < blackjack.playerHands.size(); handIndex++){
+            for(int i = 0; i < 10; i++) {
+                blackjack.hitPlayerHand(handIndex);
+            }
+        }
+        blackjack.hitPlayerHand(0);
+        assertEquals(true, blackjack.dealerTurnInProgress);
     }
 }

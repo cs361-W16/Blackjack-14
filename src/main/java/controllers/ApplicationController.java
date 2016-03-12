@@ -65,11 +65,12 @@ public class ApplicationController {
 
         //=================================================================================
         //Just a test for now
-        String frontURL = "assets/cards/14Hearts.png";
-        String backURL = "assets/cards/cardback.jpg";
-        blackjack.playerHands.get(handIndex).cards.add(new Card(frontURL, backURL, true));
+        //String frontURL = "assets/cards/14Hearts.png";
+        //String backURL = "assets/cards/cardback.jpg";
+        //blackjack.playerHands.get(handIndex).cards.add(new Card(frontURL, backURL, true));
         //=================================================================================
 
+        blackjack.hitPlayerHand(handIndex);
         return Results.json().render(blackjack);
     }
 

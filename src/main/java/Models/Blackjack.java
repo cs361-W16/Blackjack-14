@@ -143,4 +143,25 @@ public class Blackjack {
             dealerTurnInProgress = true;
         }
     }
+
+    //Hit for player hand
+    public void hitPlayerHand(int handIndex){
+        //Add card to hand
+        playerHands.get(handIndex).cards.add(playingCards.drawCards(1).get(0));
+
+        //Reset the options for the designated hand
+        playerHands.get(handIndex).setHandOptions();
+
+        //Determine if the dealer should start their turn
+        Boolean noOptionsFound = true;
+        for(PlayerHand hand : playerHands){
+            if(hand.handOptions.size() >= 1){
+                noOptionsFound = false;
+            }
+        }
+
+        if(noOptionsFound){
+            dealerTurnInProgress = true;
+        }
+    }
 }

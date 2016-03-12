@@ -10,6 +10,14 @@ import static org.junit.Assert.*;
 public class CardTest {
 
     @Test
+    public void testCard() throws Exception {
+        Card c = new Card("assets/cards/2Spades.png", "assets/cards/cardback.png", true);
+        assertEquals(c.faceVisible, true);
+        assertEquals(c.hiddenImageURL, "assets/cards/cardback.png");
+        assertEquals(c.visibleImageURL, "assets/cards/2Spades.png");
+    }
+
+    @Test
     public void testGetSuit() throws Exception {
         Card c = new Card(5, Suit.Hearts, "assets/cards/5Hearts.png", "assets/cards/cardback.jpg", true);
         assertEquals(Suit.Hearts, c.getSuit());
