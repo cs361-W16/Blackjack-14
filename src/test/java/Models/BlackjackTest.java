@@ -40,7 +40,6 @@ public class BlackjackTest {
         blackjack.dealerHand.cards.add(new Card(8, Suit.Clubs, "", "", true));
         blackjack.playerHands.get(0).newHand(new Card(7, Suit.Clubs, "", "", true), new Card(7, Suit.Clubs, "", "", true));
         blackjack.playerHands.get(0).cards.add(new Card(8, Suit.Clubs, "", "", true));
-        blackjack.playerHands.get(0).bet = 2;
         blackjack.concludeRound();
         assertEquals(102, blackjack.playerBalance);
         assertEquals(0, blackjack.playerHands.get(0).bet);
