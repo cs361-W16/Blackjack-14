@@ -34,61 +34,17 @@ public class ApplicationController {
     }
 
     public Result blackjackInitialization(){
-        //=================================================================================
-        //Remove test data before the assignment is due
-        //=================================================================================
-        String backURL = "assets/cards/cardback.jpg";
-
-        DealerHand dealerHand = new DealerHand(new ArrayList<Card>(), "");
-        dealerHand.cards.add(new Card(backURL, "assets/cards/2Clubs.png", false));
-        dealerHand.cards.add(new Card("assets/cards/7Clubs.png", backURL, true));
-        dealerHand.status = "";
-
-        PlayerHand playerHand = new PlayerHand(new ArrayList<Card>(), "");
-        playerHand.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand.cards.add(new Card("assets/cards/6Clubs.png", backURL, true));
-        playerHand.bet = 2;
-        playerHand.status = "";
-        playerHand.handOptions.add(new Option("hit", "Hit"));
-        playerHand.handOptions.add(new Option("stay", "Stay"));
-        playerHand.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand.handOptions.add(new Option("split", "Split"));
-
-        PlayerHand playerHand2 = new PlayerHand(new ArrayList<Card>(), "");
-        playerHand2.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/7Hearts.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/12Hearts.png", backURL, true));
-        playerHand2.bet = 4;
-        playerHand2.status = "";
-        playerHand2.handOptions.add(new Option("hit", "Hit"));
-        playerHand2.handOptions.add(new Option("stay", "Stay"));
-        playerHand2.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand2.handOptions.add(new Option("split", "Split"));
-
-        PlayerHand playerHand3 = new PlayerHand(new ArrayList<Card>(), "");
-        playerHand3.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand3.cards.add(new Card("assets/cards/12Diamonds.png", backURL, true));
-        playerHand3.bet = 2;
-        playerHand3.status = "";
-        playerHand3.handOptions.add(new Option("hit", "Hit"));
-        playerHand3.handOptions.add(new Option("stay", "Stay"));
-        playerHand3.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand3.handOptions.add(new Option("split", "Split"));
 
         Blackjack blackjack = new Blackjack();
 
         blackjack.playingCards = new PlayingCardsContainer();
+        blackjack.dealerHand = new DealerHand(blackjack.playingCards.drawCards(2), "");
+        blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
+        blackjack.playerHands.get(0).resetHand();
         blackjack.errorState = false;
         blackjack.gameOptions.add(new Option("newRound", "Deal"));
         blackjack.dealerTurnInProgress = false;
-        blackjack.playerBalance = 1;
-        blackjack.dealerHand = dealerHand;
-        blackjack.playerHands.add(playerHand);
-        blackjack.playerHands.add(playerHand2);
-        blackjack.playerHands.add(playerHand3);
-        //=================================================================================
-        //Remove test data before the assignment is due
-        //=================================================================================
+        blackjack.playerBalance = 100;
 
         return Results.json().render(blackjack);
     }
