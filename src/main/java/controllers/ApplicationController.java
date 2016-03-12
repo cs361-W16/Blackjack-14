@@ -40,11 +40,17 @@ public class ApplicationController {
         blackjack.playingCards = new PlayingCardsContainer();
         blackjack.dealerHand = new DealerHand(blackjack.playingCards.drawCards(2), "");
         blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
+        blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
+        blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
+        //blackjack.playerHands.add(new PlayerHand(blackjack.playingCards.drawCards(2), ""));
         blackjack.playerHands.get(0).resetHand();
+        blackjack.playerHands.get(1).resetHand();
+        blackjack.playerHands.get(2).resetHand();
+        //blackjack.playerHands.get(3).resetHand();
         blackjack.errorState = false;
         blackjack.gameOptions.add(new Option("newRound", "Deal"));
         blackjack.dealerTurnInProgress = false;
-        blackjack.playerBalance = 100;
+        blackjack.playerBalance = 1;
 
         return Results.json().render(blackjack);
     }
@@ -77,10 +83,26 @@ public class ApplicationController {
 
         //=================================================================================
         //Just a test for now
-        String frontURL = "assets/cards/14Hearts.png";
-        String backURL = "assets/cards/cardback.jpg";
-        blackjack.playerHands.get(handIndex).cards.add(new Card(frontURL, backURL, true));
+        //String frontURL = "assets/cards/14Hearts.png";
+        //String backURL = "assets/cards/cardback.jpg";
+        //blackjack.playerHands.get(handIndex).cards.add(new Card(frontURL, backURL, true));
         //=================================================================================
+        blackjack.playerHands.get(handIndex).cards.add(blackjack.playingCards.drawCards(1).get(0));
+        blackjack.playerHands.get(handIndex).setHandOptions();
+        if(blackjack.playerHands.get(handIndex).getHandValue() > 21){
+            blackjack.playerHands.get(handIndex).status = "bust";
+            blackjack.playerBalance -= blackjack.playerHands.get(handIndex).bet;
+            blackjack.playerHands.remove(handIndex);
+        }
+        if(blackjack.playerHands.get(handIndex).getHandValue() == 21){
+            blackjack.playerHands.get(handIndex).status = "win";
+            blackjack.playerBalance += blackjack.playerHands.get(handIndex).bet;
+            blackjack.playingCards.discardCards(blackjack.playerHands.get(handIndex).cards);
+            blackjack.playerHands.remove(handIndex);
+        }
+        if(blackjack.playerHands.size() == 0) {
+            blackjack.dealerTurnInProgress = true;
+        }
 
         return Results.json().render(blackjack);
     }
