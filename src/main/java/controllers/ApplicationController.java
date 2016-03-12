@@ -16,10 +16,7 @@
 
 package controllers;
 
-import Models.Blackjack;
-import Models.Card;
-import Models.Hand;
-import Models.Option;
+import Models.*;
 import ninja.Context;
 import ninja.Result;
 import ninja.Results;
@@ -31,67 +28,14 @@ import java.util.ArrayList;
 
 @Singleton
 public class ApplicationController {
-
     public Result index() {
         return Results.html().template("views/Blackjack.ftl.html");
     }
 
     public Result blackjackInitialization(){
-        //=================================================================================
-        //Remove test data before the assignment is due
-        //=================================================================================
-        String backURL = "assets/cards/cardback.jpg";
-
-        Hand dealerHand = new Hand();
-        dealerHand.cards.add(new Card(backURL, "assets/cards/2Clubs.png", false));
-        dealerHand.cards.add(new Card("assets/cards/7Clubs.png", backURL, true));
-        dealerHand.status = "";
-
-        Hand playerHand = new Hand();
-        playerHand.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand.cards.add(new Card("assets/cards/6Clubs.png", backURL, true));
-        playerHand.bet = 2;
-        playerHand.status = "";
-        playerHand.handOptions.add(new Option("hit", "Hit"));
-        playerHand.handOptions.add(new Option("stay", "Stay"));
-        playerHand.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand.handOptions.add(new Option("split", "Split"));
-
-        Hand playerHand2 = new Hand();
-        playerHand2.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/7Hearts.png", backURL, true));
-        playerHand2.cards.add(new Card("assets/cards/12Hearts.png", backURL, true));
-        playerHand2.bet = 4;
-        playerHand2.status = "";
-        playerHand2.handOptions.add(new Option("hit", "Hit"));
-        playerHand2.handOptions.add(new Option("stay", "Stay"));
-        playerHand2.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand2.handOptions.add(new Option("split", "Split"));
-
-        Hand playerHand3 = new Hand();
-        playerHand3.cards.add(new Card("assets/cards/14Diamonds.png", backURL, true));
-        playerHand3.cards.add(new Card("assets/cards/12Diamonds.png", backURL, true));
-        playerHand3.bet = 2;
-        playerHand3.status = "";
-        playerHand3.handOptions.add(new Option("hit", "Hit"));
-        playerHand3.handOptions.add(new Option("stay", "Stay"));
-        playerHand3.handOptions.add(new Option("doubleDown", "Double Down"));
-        playerHand3.handOptions.add(new Option("split", "Split"));
-
-        Blackjack blackjack = new Blackjack();
-
-        blackjack.errorState = false;
-        blackjack.gameOptions.add(new Option("newRound", "Deal"));
-        blackjack.dealerTurnInProgress = false;
-        blackjack.playerBalance = 1;
-        blackjack.dealerHand = dealerHand;
-        blackjack.playerHands.add(playerHand);
-        blackjack.playerHands.add(playerHand2);
-        blackjack.playerHands.add(playerHand3);
-        //=================================================================================
-        //Remove test data before the assignment is due
-        //=================================================================================
-
+        Blackjack blackjack = new Blackjack(98, 2);
+        blackjack.dealerHand.newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
+        blackjack.playerHands.get(0).newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
         return Results.json().render(blackjack);
     }
 
@@ -105,9 +49,7 @@ public class ApplicationController {
     }
 
     public Result concludeRound(Blackjack blackjack){
-
-        //
-
+        blackjack.concludeRound();
         return Results.json().render(blackjack);
     }
 
@@ -131,27 +73,30 @@ public class ApplicationController {
         return Results.json().render(blackjack);
     }
 
-    public Result doubleDown(@PathParam("hand") String handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //
+    public Result doubleDown(@PathParam("hand") int handIndex, Blackjack blackjack){
+        //Check that the player has enough funds or throw error state
+        PlayerHand activeHand = blackjack.playerHands.get(handIndex);
+        if(blackjack.playerBalance < activeHand.bet) {
+            blackjack.errorState = true;
+        } else {
+            blackjack.doubleDownPlayerHand(handIndex);
+        }
 
         return Results.json().render(blackjack);
     }
 
     public Result split(@PathParam("hand") int handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //
-
+        //Check that the player has enough funds or throw error state
+        if(blackjack.playerBalance < blackjack.ante) {
+            blackjack.errorState = true;
+        } else{
+            blackjack.splitPlayerHand(handIndex);
+        }
         return Results.json().render(blackjack);
     }
 
     public Result stay(@PathParam("hand") int handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //
-
+        blackjack.stayPlayerHand(handIndex);
         return Results.json().render(blackjack);
     }
 }
