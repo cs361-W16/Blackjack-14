@@ -17,10 +17,7 @@
 package controllers;
 
 
-import Models.Blackjack;
-import Models.Card;
-import Models.Hand;
-import Models.PlayerHand;
+import Models.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -68,7 +65,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testNewRoundThrowsSetsErrorState(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
         blackjack.errorState = false;
         blackjack.playerBalance = 1;
         Response response = makeRequest(
@@ -84,7 +81,9 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testConcludeRound(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
+        blackjack.dealerHand.newHand(new Card(10, Suit.Clubs, "", "", true), new Card(9, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "", "", true), new Card(8, Suit.Clubs, "", "", true));
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_CONCLUDE_ROUND)).payload(blackjack).contentTypeApplicationJson());
@@ -96,7 +95,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testDealerAction(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_DEALER_ACTION)).payload(blackjack).contentTypeApplicationJson());
@@ -108,9 +107,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testHit(){
-        Blackjack blackjack = new Blackjack();
-        PlayerHand hand = new PlayerHand(new ArrayList<Card>(), "");
-        blackjack.playerHands.add(hand);
+        Blackjack blackjack = new Blackjack(100, 2);
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_HIT + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
@@ -123,7 +120,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testDoubleDown(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_DOUBLE_DOWN + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
@@ -136,7 +133,9 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testSplit(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
+        blackjack.dealerHand.newHand(new Card(10, Suit.Clubs, "", "", true), new Card(9, Suit.Clubs, "", "", true));
+        blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "", "", true), new Card(2, Suit.Clubs, "", "", true));
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_SPLIT + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
@@ -149,7 +148,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
     @Test
     public void testStay(){
-        Blackjack blackjack = new Blackjack();
+        Blackjack blackjack = new Blackjack(100, 2);
         Response response = makeRequest(
                 Request.POST().url(
                         testServerUrl().path(URL_STAY + "/" + 0)).payload(blackjack).contentTypeApplicationJson());
