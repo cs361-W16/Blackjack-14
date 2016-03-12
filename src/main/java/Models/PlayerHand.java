@@ -24,7 +24,7 @@ public class PlayerHand extends Hand{
         cards.add(card);
     }
 
-    protected void resetHand(){
+    public void resetHand(){
         status = "";
         bet = 2;
         setHandOptions();
