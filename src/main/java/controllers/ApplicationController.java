@@ -56,6 +56,10 @@ public class ApplicationController {
     public Result dealerAction(Blackjack blackjack){
 
         //
+        if(blackjack.dealerHand.getHandValue() < 17)
+            blackjack.dealerAction();
+        blackjack.dealerTurnInProgress = false;
+        blackjack.concludeRound();
 
         return Results.json().render(blackjack);
     }

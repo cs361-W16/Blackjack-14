@@ -203,4 +203,15 @@ public class BlackjackTest {
         blackjack.hitPlayerHand(0);
         assertEquals(true, blackjack.dealerTurnInProgress);
     }
+
+    @Test
+    public void testNewRound() throws Exception {
+        int initialBalance = 100;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.playerBalance = 0;
+        blackjack.newRound();
+        assertEquals(blackjack.errorState, true);
+        assertEquals(blackjack.playerHands.size(), 1);
+    }
 }

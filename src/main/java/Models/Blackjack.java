@@ -164,4 +164,32 @@ public class Blackjack {
             dealerTurnInProgress = true;
         }
     }
+
+
+    public void dealerAction(){
+        if(dealerHand.cards.get(0).faceVisible == false)
+        {
+            dealerHand.cards.get(0).flipCard();
+        }
+        dealerHand.addTopCard(playingCards.drawCards(1).get(0));
+
+    }
+
+    public void newRound(){
+        if(playerBalance < 2){
+            errorState = true;
+            dealerHand.discardHand();
+            for(PlayerHand hand : playerHands)
+                hand.discardHand();
+            for(PlayerHand hand : playerHands){
+                playingCards.discardCards(hand.cards);
+            }
+            playingCards.discardCards(dealerHand.cards);
+
+            dealerHand.newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+            for(PlayerHand hand : playerHands)
+                hand.newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+        }
+    }
+
 }
