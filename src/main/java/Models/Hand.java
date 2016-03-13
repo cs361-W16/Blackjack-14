@@ -56,7 +56,7 @@ public abstract class Hand {
 
     protected abstract void resetHand();
     protected abstract void addBottomCard(Card card);
-    private void addTopCard(Card card){
+    protected void addTopCard(Card card){
         cards.add(card);
     }
 }
