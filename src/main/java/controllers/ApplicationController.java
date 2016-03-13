@@ -42,9 +42,9 @@ public class ApplicationController {
     public Result newRound(Blackjack blackjack){
 
         //Check that player is short of funds before enabling the error state
-        if(blackjack.playerBalance<2){
-            blackjack.errorState = true;
-        }
+        //if(blackjack.playerBalance<2){
+        //    blackjack.errorState = true;
+        //}
         return Results.json().render(blackjack);
     }
 
@@ -56,7 +56,7 @@ public class ApplicationController {
     public Result dealerAction(Blackjack blackjack){
 
         //
-
+        blackjack.dealerAction();
         return Results.json().render(blackjack);
     }
 

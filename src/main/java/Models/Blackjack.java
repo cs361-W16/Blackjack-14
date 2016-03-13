@@ -143,4 +143,25 @@ public class Blackjack {
             dealerTurnInProgress = true;
         }
     }
+
+    public void dealerAction(){
+        while(dealerTurnInProgress){
+            int dealervalue = dealerHand.getHandValue();
+            while(dealervalue < 17){
+                dealerHand.addTopCard(playingCards.drawCards(1).get(0));
+            }
+        }
+    }
+
+    public void newRound(){
+        if(playerBalance < 2){
+            errorState = true;
+            dealerHand.discardHand();
+            for(PlayerHand hand : playerHands)
+                hand.discardHand();
+            dealerHand.newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+            for(PlayerHand hand : playerHands)
+                hand.newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+        }
+    }
 }

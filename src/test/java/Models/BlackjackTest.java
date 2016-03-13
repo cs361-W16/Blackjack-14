@@ -150,4 +150,30 @@ public class BlackjackTest {
         assertEquals(0, blackjack.playerHands.get(0).handOptions.size());
         assertEquals(false, blackjack.dealerTurnInProgress);
     }
+
+    /*@Test
+    public void testDealerAction() throws Exception {
+        int initialBalance = 100;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+        Card topcard = new Card(9, Suit.Hearts, "assets/cards/9Hearts.png", "back", true);
+        Card bottomcard = new Card(8, Suit.Hearts, "back", "assets/cards/8Hearts.png", false);
+        blackjack.dealerTurnInProgress = true;
+        blackjack.dealerAction();
+        blackjack.dealerHand.addBottomCard(bottomcard);
+        blackjack.dealerHand.addTopCard(topcard);
+        assertEquals(blackjack.dealerHand.getHandValue(), 17);
+    }*/
+
+    @Test
+    public void testNewRound() throws Exception {
+        int initialBalance = 100;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.playerBalance = 0;
+        blackjack.newRound();
+        assertEquals(blackjack.errorState, true);
+        assertEquals(blackjack.playerHands.size(), 1);
+    }
+
 }
