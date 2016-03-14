@@ -50,8 +50,64 @@ public class Blackjack {
         errorState = false;
     }
 
+    //New round
+    public void newRound(){
+        //Reset any possible error states
+        errorState = false;
+
+        //Check that player is short of funds before enabling the error state
+        if(playerBalance < ante){
+            errorState = true;
+        } else{
+            //Discard all hands
+            playingCards.discardCards(dealerHand.discardHand());
+            for(PlayerHand hand : playerHands){
+                playingCards.discardCards(hand.discardHand());
+            }
+            //Deal the dealer a new hand
+            dealerHand.newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+
+            //Deal the player a new hand
+            playerHands = new ArrayList<>();
+            playerHands.add(new PlayerHand(new ArrayList<Card>(), ""));
+            playerHands.get(0).newHand(playingCards.drawCards(1).get(0), playingCards.drawCards(1).get(0));
+
+            //Start dealers turn if player has 21
+            if(playerHands.get(0).getHandValue() == 21){
+                dealerTurnInProgress = true;
+            }
+
+            //Update player balance
+            playerBalance -= ante;
+        }
+    }
+
+    //Dealer Action
+    public void dealerAction(){
+        //Reset any possible error states
+        errorState = false;
+
+        //Flip bottom card if not already visible
+        if(!dealerHand.cards.get(0).faceVisible){
+            dealerHand.cards.get(0).flipCard();
+        } else {
+            //Decide to hit or stay
+            if (dealerHand.getHandValue() < 17) {
+                //hit
+                dealerHand.cards.add(playingCards.drawCards(1).get(0));
+            } else {
+                //stay
+                dealerTurnInProgress = false;
+                concludeRound();
+            }
+        }
+    }
+
     //Conclude Round
     public void concludeRound(){
+        //Reset any possible error states
+        errorState = false;
+
         int dealerValue = dealerHand.getHandValue();
 
         //Determine betting results and set resolution statuses
@@ -62,14 +118,14 @@ public class Blackjack {
                 hand.bet = 0;
                 hand.status = "Draw";
 
-                //Win
-            }else if(hand.getHandValue() > dealerValue){
+            //Win
+            }else if(dealerValue > 21 || hand.getHandValue() > dealerValue && hand.getHandValue() <= 21){
                 playerBalance += (2 * hand.bet);
                 hand.bet = 0;
                 hand.status = "Win";
 
-                //Lose
-            }else if(hand.getHandValue() < dealerValue){
+            //Lose
+            }else {
                 hand.bet = 0;
                 hand.status = "Lose";
             }
@@ -78,6 +134,9 @@ public class Blackjack {
 
     //Doubledown for player hand
     public void doubleDownPlayerHand(int handIndex){
+        //Reset any possible error states
+        errorState = false;
+
         PlayerHand activeHand = playerHands.get(handIndex);
 
         //Update player balance
@@ -105,6 +164,9 @@ public class Blackjack {
 
     //Split for player hand
     public void splitPlayerHand(int handIndex){
+        //Reset any possible error states
+        errorState = false;
+
         //Update balance
         playerBalance -= ante;
 
@@ -128,6 +190,9 @@ public class Blackjack {
 
     //Stay for player hand
     public void stayPlayerHand(int handIndex){
+        //Reset any possible error states
+        errorState = false;
+
         //Remove the options for the designated hand
         playerHands.get(handIndex).handOptions.clear();
 
@@ -146,6 +211,9 @@ public class Blackjack {
 
     //Hit for player hand
     public void hitPlayerHand(int handIndex){
+        //Reset any possible error states
+        errorState = false;
+
         //Add card to hand
         playerHands.get(handIndex).cards.add(playingCards.drawCards(1).get(0));
 

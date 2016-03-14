@@ -9,7 +9,7 @@ const DEALER_ID = "Dealer";
 const PLAYER_ID = "Player";
 
 //Game constants
-const DELAY = 3000;
+const DELAY = 1000;
 
 //Game variables
 var blackjack;
@@ -125,39 +125,24 @@ function generateHandHTML(cards){
 
 //Game action
 function gameAction(option){
-    console.log("gameAction: (" + option +")");
-    $.ajax({
-        type: "POST",
-        url: option,
-        data: JSON.stringify(blackjack),
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        success: function(data, status){
-            blackjack = data;
-            displayGame()
-        }
-    });
-}
-
-//Conclude round
-function concludeRound(){
-    console.log("concludeRound");
-    $.ajax({
-        type: "POST",
-        url: "concludeRound",
-        data: JSON.stringify(blackjack),
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        success: function(data, status){
-            blackjack = data;
-            displayGame()
-        }
-    });
+    var newDeal = "newDeal";
+    if(newDeal.localeCompare(option) && blackjack.dealerTurnInProgress == false){
+        $.ajax({
+            type: "POST",
+            url: option,
+            data: JSON.stringify(blackjack),
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data, status){
+                blackjack = data;
+                displayGame()
+            }
+        });
+    }
 }
 
 //Dealer action
 function dealerAction(){
-    console.log("dealerAction");
     //End the loop
     clearInterval(dealersTurn);
 
@@ -176,7 +161,6 @@ function dealerAction(){
 
 //Player action
 function playerAction(action, handIndex){
-    console.log("playerAction: (" + action + ")\nHand: (" + handIndex + ")");
     $.ajax({
         type: "POST",
         url: action + "/" + handIndex,
