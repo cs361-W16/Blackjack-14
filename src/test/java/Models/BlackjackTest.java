@@ -174,8 +174,8 @@ public class BlackjackTest {
         assertEquals(98, blackjack.playerBalance);
         assertEquals(4, blackjack.playerHands.get(0).bet);
         assertEquals(3, blackjack.playerHands.get(0).cards.size());
-        assertTrue(blackjack.playerHands.get(0).handOptions.size() > 0);
-        assertEquals(false, blackjack.dealerTurnInProgress);
+        assertTrue(blackjack.playerHands.get(0).handOptions.size() == 0);
+        assertEquals(true, blackjack.dealerTurnInProgress);
 
         //Test double down that results in hand over 21
         blackjack = new Blackjack(initialBalance, initialAnte);
