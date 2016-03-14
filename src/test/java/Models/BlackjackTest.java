@@ -49,6 +49,71 @@ public class BlackjackTest {
     }
 
     @Test
+    public void testDealerAction(){
+        int initialBalance = 100;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+
+        //Test for flipping bot card
+        blackjack.newRound();
+        blackjack.dealerHand.cards = new ArrayList<Card>();
+        blackjack.dealerHand.cards.add(new Card(10, Suit.Clubs, "assets/cards/10Clubs.png", "", false));
+        blackjack.dealerHand.cards.add(new Card(7, Suit.Clubs, "assets/cards/7Clubs.png", "", false));
+        blackjack.dealerTurnInProgress = true;
+        blackjack.dealerAction();
+        assertEquals(2, blackjack.dealerHand.cards.size());
+        assertEquals(true, blackjack.dealerHand.cards.get(0).faceVisible);
+        assertEquals(true, blackjack.dealerTurnInProgress);
+
+        //Test for stay at 17
+        blackjack.newRound();
+        blackjack.dealerHand.cards = new ArrayList<Card>();
+        blackjack.dealerHand.cards.add(new Card(10, Suit.Clubs, "assets/cards/10Clubs.png", "", true));
+        blackjack.dealerHand.cards.add(new Card(7, Suit.Clubs, "assets/cards/7Clubs.png", "", false));
+        blackjack.dealerTurnInProgress = true;
+        blackjack.dealerAction();
+        assertEquals(2, blackjack.dealerHand.cards.size());
+        assertEquals(false, blackjack.dealerTurnInProgress);
+
+        //Test for hit under 17
+        blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.newRound();
+        blackjack.dealerHand.cards = new ArrayList<Card>();
+        blackjack.dealerHand.cards.add(new Card(10, Suit.Clubs, "assets/cards/10Clubs.png", "", true));
+        blackjack.dealerHand.cards.add(new Card(6, Suit.Clubs, "assets/cards/6Clubs.png", "", false));
+        blackjack.dealerTurnInProgress = true;
+        blackjack.dealerAction();
+        assertEquals(3, blackjack.dealerHand.cards.size());
+        assertEquals(true, blackjack.dealerHand.cards.get(0).faceVisible);
+    }
+
+    @Test
+    public void testNewRound(){
+        int initialBalance = 0;
+        int initialAnte = 2;
+        Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+
+        //New round without enough funds
+        blackjack.newRound();
+        assertEquals(true, blackjack.errorState);
+        assertEquals(0, blackjack.dealerHand.cards.size());
+        assertEquals(1, blackjack.playerHands.size());
+        assertEquals(0, blackjack.playerHands.get(0).cards.size());
+        assertEquals(0, blackjack.playerBalance);
+
+        //New round with enough funds
+        initialBalance = 100;
+        blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.newRound();
+        assertEquals(false, blackjack.errorState);
+        assertEquals(2, blackjack.dealerHand.cards.size());
+        assertEquals(1, blackjack.playerHands.size());
+        assertEquals(2, blackjack.playerHands.get(0).bet);
+        assertEquals(2, blackjack.playerHands.get(0).cards.size());
+        assertEquals(98, blackjack.playerBalance);
+    }
+
+    @Test
     public void testConcludeRound() throws Exception{
         int initialBalance = 100;
         int initialAnte = 2;
@@ -101,6 +166,7 @@ public class BlackjackTest {
         int initialBalance = 100;
         int initialAnte = 2;
         Blackjack blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.errorState = false;
 
         //Test double down that results in hand under 21
         blackjack.playerHands.get(0).newHand(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(2, Suit.Clubs, "", "", true));
@@ -113,6 +179,7 @@ public class BlackjackTest {
 
         //Test double down that results in hand over 21
         blackjack = new Blackjack(initialBalance, initialAnte);
+        blackjack.errorState = false;
         blackjack.playerHands.get(0).newHand(new Card(10, Suit.Clubs, "assets/cards/14Diamonds.png", "", true), new Card(9, Suit.Clubs, "", "", true));
         blackjack.playerHands.get(0).cards.add(new Card(2, Suit.Clubs, "assets/cards/14Diamonds.png", "", true));
         blackjack.doubleDownPlayerHand(0);
