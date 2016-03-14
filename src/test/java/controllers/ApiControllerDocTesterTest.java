@@ -43,7 +43,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
     String URL_DOUBLE_DOWN = "/doubleDown";
     String URL_SPLIT = "/split";
     String URL_STAY = "/stay";
-
+/*
     @Test
     public void testIndex(){
         Response response = makeRequest(
@@ -157,5 +157,5 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
 
         //We might want to test that blackjack was updated correctly
         //Hand has no more options. Dealers turn may have begun
-    }
+    }*/
 }

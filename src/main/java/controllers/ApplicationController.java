@@ -33,18 +33,14 @@ public class ApplicationController {
     }
 
     public Result blackjackInitialization(){
-        Blackjack blackjack = new Blackjack(98, 2);
+        Blackjack blackjack = new Blackjack(100, 2);
         blackjack.dealerHand.newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
         blackjack.playerHands.get(0).newHand(blackjack.playingCards.drawCards(1).get(0), blackjack.playingCards.drawCards(1).get(0));
         return Results.json().render(blackjack);
     }
 
     public Result newRound(Blackjack blackjack){
-
-        //Check that player is short of funds before enabling the error state
-        if(blackjack.playerBalance<2){
-            blackjack.errorState = true;
-        }
+        blackjack.newRound();
         return Results.json().render(blackjack);
     }
 
@@ -54,22 +50,12 @@ public class ApplicationController {
     }
 
     public Result dealerAction(Blackjack blackjack){
-
-        //
-
+        blackjack.dealerAction();
         return Results.json().render(blackjack);
     }
 
     public Result hit(@PathParam("hand") int handIndex, Blackjack blackjack){
-        //If given an invalid index we should probably put up an error state
-
-        //=================================================================================
-        //Just a test for now
-        String frontURL = "assets/cards/14Hearts.png";
-        String backURL = "assets/cards/cardback.jpg";
-        blackjack.playerHands.get(handIndex).cards.add(new Card(frontURL, backURL, true));
-        //=================================================================================
-
+        blackjack.hitPlayerHand(handIndex);
         return Results.json().render(blackjack);
     }
 
