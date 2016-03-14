@@ -146,20 +146,8 @@ public class Blackjack {
         activeHand.bet += activeHand.bet;
         activeHand.cards.add(playingCards.drawCards(1).get(0));
 
-        //Update the hand's options
-        activeHand.setHandOptions();
-
-        //Determine if the dealer should start their turn
-        Boolean noOptionsFound = true;
-        for(PlayerHand hand : playerHands){
-            if(hand.handOptions.size() >= 1){
-                noOptionsFound = false;
-            }
-        }
-
-        if(noOptionsFound){
-            dealerTurnInProgress = true;
-        }
+        //Stay the hand because the rules require it
+        stayPlayerHand(handIndex);
     }
 
     //Split for player hand
