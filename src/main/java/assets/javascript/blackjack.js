@@ -113,7 +113,7 @@ function generatePlayerOptionsHTML(options, handIndex){
 //update resolution
 function updateResolution(){
     var resolution = document.getElementById(GameRes);
-    blackjack.
+    resolution.innerHTML = blackjack.resolution;
 }
 
 //Display hand
