@@ -11,6 +11,17 @@
     vertical-align: text-top;
 }
 
+.hand h1 {
+   position: absolute;
+   left: 0;
+   top: 50%;
+   width: 100%;
+   text-align: center;
+   font-size: 800%;
+   z-index: 99;
+   color: rgb(0, 255, 255);
+}
+
 .playerOptions {
     min-height: 50px;
     padding-top: 20px;

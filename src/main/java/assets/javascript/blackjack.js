@@ -74,29 +74,30 @@ function displayGameOptions(){
 
 //Display dealer hand
 function displayDealerHand(){
-    //Get containing element and reset inner html
-    var dealer = document.getElementById(DEALER_ID);
-    var html = "";
-    html += "<div class='col-sm-12 col-centered hand'>";
-    //display cards
-    html += generateHandHTML(blackjack.dealerHand.cards);
-    html += "</div>";
-    dealer.innerHTML = html;
+   //Get containing element and reset inner html
+   var dealer = document.getElementById(DEALER_ID);
+   var html = "";
+   html += "<div class='col-sm-12 col-centered hand'>";
+   html += "<h1 class='display-1'>" + blackjack.dealerHand.status + "</h1>";
+   //display cards
+   html += generateHandHTML(blackjack.dealerHand);
+   html += "</div>";
+   dealer.innerHTML = html;
 }
 
 //Display player hands
 function displayPlayerHands(){
-    //Get containing element and reset inner html
-    var player = document.getElementById(PLAYER_ID);
-    var html = "";
-    //Create a container for each hand
-    for(var i = 0; i < blackjack.playerHands.length; i++){
-        html += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-3 col-centered hand'>";
-        html += generatePlayerOptionsHTML(blackjack.playerHands[i].handOptions, i);
-        html += generateHandHTML(blackjack.playerHands[i].cards);
-        html += "</div>";
-    }
-    player.innerHTML = html;
+   //Get containing element and reset inner html
+   var player = document.getElementById(PLAYER_ID);
+   var html = "";
+   //Create a container for each hand
+   for(var i = 0; i < blackjack.playerHands.length; i++){
+       html += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-3 col-centered hand'>";
+       html += generatePlayerOptionsHTML(blackjack.playerHands[i].handOptions, i);
+       html += generateHandHTML(blackjack.playerHands[i]);
+       html += "</div>";
+   }
+   player.innerHTML = html;
 }
 
 //Display player options horizontally
@@ -111,16 +112,17 @@ function generatePlayerOptionsHTML(options, handIndex){
 }
 
 //Display hand
-function generateHandHTML(cards){
-    var numberOfGaps = cards.length-1;
-    var totalHeight = IMAGE_HEIGHT + numberOfGaps*IMAGE_GAP;
-    var html = "<div class='row' style='height:"+totalHeight+"px'>";
-    html += "<div class='col-lg-12'>";
-    for(var i = 0; i < cards.length; i++){
-        html += "<div class='row card_container'><img src='" + cards[i].visibleImageURL + "'></img></div>";
-    }
-    html += "</div></div>";
-    return html;
+function generateHandHTML(hand){
+   var numberOfGaps = hand.cards.length-1;
+   var totalHeight = IMAGE_HEIGHT + numberOfGaps*IMAGE_GAP;
+   var html = "<div class='row' style='height:"+totalHeight+"px'>";
+   html += "<div class='col-lg-12'>";
+   html += "<h1>" + hand.status + "</h1>";
+   for(var i = 0; i < hand.cards.length; i++){
+       html += "<div class='row card_container'><img src='" + hand.cards[i].visibleImageURL + "'></img></div>";
+   }
+   html += "</div></div>";
+   return html;
 }
 
 //Game action

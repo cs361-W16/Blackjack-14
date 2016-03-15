@@ -17,6 +17,7 @@ public class Blackjack {
     public DealerHand dealerHand;
     public java.util.List<PlayerHand> playerHands;
     public boolean errorState;
+    public String resolution;
 
     @JsonCreator
     public Blackjack(@JsonProperty("ante") int ante,
@@ -117,17 +118,20 @@ public class Blackjack {
                 playerBalance += hand.bet;
                 hand.bet = 0;
                 hand.status = "Draw";
+                resolution = "Draw";
 
             //Win
             }else if(dealerValue > 21 || hand.getHandValue() > dealerValue && hand.getHandValue() <= 21){
                 playerBalance += (2 * hand.bet);
                 hand.bet = 0;
                 hand.status = "Win";
+                resolution = "Win";
 
             //Lose
             }else {
                 hand.bet = 0;
                 hand.status = "Lose";
+                resolution = "Lose";
             }
         }
     }
