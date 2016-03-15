@@ -110,6 +110,12 @@ function generatePlayerOptionsHTML(options, handIndex){
     return html;
 }
 
+//update resolution
+function updateResolution(){
+    var resolution = document.getElementById(GameRes);
+    blackjack.
+}
+
 //Display hand
 function generateHandHTML(cards){
     var numberOfGaps = cards.length-1;
